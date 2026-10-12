@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pengumpulan Data Penelitian: Ketikan dan Tanda Tangan</title>
+<style>
+  :root {
+    --bg: #f5f8fa; --card: #ffffff; --ink: #14212e; --muted: #5a6b7a;
+    --line: #d5dee5; --accent: #0e7c8a; --accent-ink: #ffffff;
+    --warn: #b4540a; --ok: #1d7a46; --focus: #f2a541;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0b1f33; --card: #12304b; --ink: #eaf2f7; --muted: #9fb6c6;
+            --line: #274a68; --accent: #3bb6c6; --accent-ink: #06202c;
+            --warn: #f2a541; --ok: #6fd39a; }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 680px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font: 700 26px/1.25 Georgia, "Times New Roman", serif; margin: 0 0 4px; }
+  h2 { font: 700 21px/1.3 Georgia, "Times New Roman", serif; margin: 0 0 12px; }
+  p { margin: 0 0 12px; }
+  .sub { color: var(--muted); margin-bottom: 20px; }
+  .step-label { color: var(--muted); font-size: 14px; margin-bottom: 8px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 20px; }
+  label { display: block; font-weight: 600; margin: 14px 0 6px; }
+  input[type=text], select { width: 100%; padding: 12px; font: inherit; color: var(--ink);
+    background: var(--bg); border: 1px solid var(--line); border-radius: 8px; }
+  input[type=text].typing { font-size: 22px; letter-spacing: .04em; font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .check { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; margin-top: 16px; }
+  .check input { width: 22px; height: 22px; margin-top: 3px; flex: none; }
+  button { font: inherit; font-weight: 600; padding: 12px 20px; border-radius: 8px; cursor: pointer;
+           border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); }
+  button.secondary { background: transparent; color: var(--ink); border-color: var(--line); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .phrase { font: 700 28px/1.2 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .06em;
+            padding: 14px; text-align: center; background: var(--bg); border: 1px dashed var(--line);
+            border-radius: 8px; margin: 8px 0 14px; user-select: none; -webkit-user-select: none; }
+  .progress { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; margin: 12px 0; }
+  .progress > div { height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+  .msg { min-height: 1.6em; font-size: 15px; }
+  .msg.err { color: var(--warn); } .msg.ok { color: var(--ok); }
+  canvas { width: 100%; height: auto; aspect-ratio: 3 / 1; background: #fff; border: 1px solid var(--line);
+           border-radius: 8px; touch-action: none; display: block; }
+  ul { padding-left: 20px; margin: 0 0 12px; } li { margin-bottom: 4px; }
+  .small { font-size: 14px; color: var(--muted); }
+  [hidden] { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { .progress > div { transition: none; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Pengumpulan data penelitian</h1>
+  <p class="sub">Ketikan dan tanda tangan untuk tugas mata kuliah Pengenalan Pola. Waktu sekitar 10-15 menit.</p>
+
+  <!-- Langkah 1: Persetujuan -->
+  <section id="s1" class="card">
+    <div class="step-label">Langkah 1 dari 4</div>
+    <h2>Persetujuan</h2>
+    <p>Kami meneliti apakah ritme mengetik dan tanda tangan dapat dipakai untuk memverifikasi identitas. Data hanya dipakai untuk tugas kuliah ini.</p>
+    <ul>
+      <li>Yang direkam: waktu menekan dan melepas tiap tombol, serta gambar tanda tangan Anda.</li>
+      <li>Yang tidak direkam: nama asli, isi ketikan pribadi, dan lokasi. Anda hanya dikenali lewat kode subjek.</li>
+      <li>Anda boleh mundur kapan saja dan meminta data Anda dihapus lewat kontak kelompok.</li>
+    </ul>
+    <p class="small">Kontak kelompok: <span id="contact">GANTI_DENGAN_KONTAK_KELOMPOK</span></p>
+    <label class="check"><input type="checkbox" id="consent"> <span>Saya telah membaca penjelasan di atas dan bersedia ikut serta.</span></label>
+    <div class="row"><button id="to2" disabled>Lanjut</button></div>
+  </section>
+
+  <!-- Langkah 2: Identitas anonim -->
+  <section id="s2" class="card" hidden>
+    <div class="step-label">Langkah 2 dari 4</div>
+    <h2>Kode subjek dan perangkat</h2>
+    <label for="subject">Kode subjek dari peneliti</label>
+    <input type="text" id="subject" placeholder="Contoh: S01" autocomplete="off" inputmode="text" maxlength="5">
+    <label for="device">Perangkat yang Anda pakai sekarang</label>
+    <select id="device">
+      <option value="">Pilih perangkat</option>
+      <option value="laptop">Laptop atau PC dengan keyboard fisik</option>
+      <option value="hp">HP atau tablet</option>
+    </select>
+    <p class="msg err" id="m2"></p>
+    <div class="row"><button class="secondary" id="back1">Kembali</button><button id="to3">Lanjut</button></div>
+  </section>
+
+  <!-- Langkah 3: Ketikan -->
+  <section id="s3" class="card" hidden>
+    <div class="step-label">Langkah 3 dari 4</div>
+    <h2>Mengetik</h2>
+    <p>Ketik teks di bawah persis seperti tertulis, lalu tekan <strong>Enter</strong>. Ulangi sampai penghitung selesai. Ketik dengan kecepatan wajar Anda. Untuk huruf besar, tahan tombol <strong>Shift</strong> (jangan pakai Caps Lock).</p>
+    <div class="phrase" id="phrase" aria-label="Teks yang harus diketik"></div>
+    <input type="text" class="typing" id="typing" autocomplete="off" autocorrect="off"
+           autocapitalize="off" spellcheck="false" aria-label="Kolom ketik" placeholder="Ketik di sini">
+    <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+    <p class="msg" id="m3" role="status"></p>
+    <p class="small">Jangan memakai Backspace atau tempel (paste). Jika salah ketik, kolom akan dikosongkan dan Anda mengulang dari awal.</p>
+    <div class="row"><button class="secondary" id="back2">Kembali</button><button id="to4" disabled>Lanjut</button></div>
+  </section>
+
+  <!-- Langkah 4: Tanda tangan -->
+  <section id="s4" class="card" hidden>
+    <div class="step-label">Langkah 4 dari 4</div>
+    <h2>Tanda tangan di layar</h2>
+    <p>Tanda tangani seperti biasa di kotak putih memakai jari, stylus, atau mouse. Simpan setelah tiap tanda tangan. Targetnya <strong id="sigTarget"></strong> tanda tangan.</p>
+    <canvas id="pad" width="1200" height="400" aria-label="Kotak tanda tangan"></canvas>
+    <div class="progress" aria-hidden="true"><div id="bar2"></div></div>
+    <p class="msg" id="m4" role="status"></p>
+    <div class="row">
+      <button class="secondary" id="clear">Hapus</button>
+      <button id="saveSig">Simpan tanda tangan</button>
+    </div>
+    <div class="row"><button class="secondary" id="back3">Kembali</button><button id="send" disabled>Kirim data</button></div>
+  </section>
+
+  <!-- Selesai -->
+  <section id="s5" class="card" hidden>
+    <h2 id="doneTitle">Selesai, terima kasih</h2>
+    <p id="doneMsg"></p>
+    <div id="paperBox" hidden>
+      <p><strong>Satu langkah lagi (tanda tangan di kertas):</strong> tanda tangani 10 kali di kertas putih polos, foto dengan cahaya merata, lalu unggah lewat tautan berikut. Cantumkan kode subjek Anda.</p>
+      <p><a id="paperLink" href="#" target="_blank" rel="noopener">Buka formulir unggah foto</a></p>
+    </div>
+    <div class="row"><button class="secondary" id="backup">Unduh cadangan data (JSON)</button></div>
+    <p class="small">Cadangan hanya dipakai jika pengiriman gagal. Kirim file itu ke kontak kelompok.</p>
+  </section>
+</main>
+
+<script>
+/* ===== Pengaturan: ubah di sini ===== */
+const CONFIG = {
+  ENDPOINT: 'https://script.google.com/macros/s/AKfycbxoZ9DzPkbmvPqqLmw7-MP38BemcVh9i_jswQsSUD859n-WBmUAm9DM-Dqlax1dOOw/exec',   // URL web app dari Google Apps Script
+  PHRASE: '.tie5Roanl',                        // string yang sama dengan dataset CMU
+  REPS: 15,                                    // jumlah pengulangan ketikan
+  SIG_COUNT: 10,                               // jumlah tanda tangan di layar
+  PAPER_FORM_URL: '',                          // tautan Google Form unggah foto (opsional)
+  CONTACT: '085363538332'
+};
+
+const $ = id => document.getElementById(id);
+const state = { subject: '', device: '', reps: [], sigs: [], consentAt: null };
+const steps = ['s1','s2','s3','s4','s5'];
+function show(id) { steps.forEach(s => $(s).hidden = (s !== id)); window.scrollTo(0, 0); }
+
+$('contact').textContent = CONFIG.CONTACT;
+$('phrase').textContent = CONFIG.PHRASE;
+$('sigTarget').textContent = CONFIG.SIG_COUNT;
+
+/* ---- Langkah 1 ---- */
+$('consent').addEventListener('change', e => { $('to2').disabled = !e.target.checked; });
+$('to2').addEventListener('click', () => { state.consentAt = new Date().toISOString(); show('s2'); });
+
+/* ---- Langkah 2 ---- */
+$('back1').addEventListener('click', () => show('s1'));
+$('to3').addEventListener('click', () => {
+  const code = $('subject').value.trim().toUpperCase();
+  const dev = $('device').value;
+  if (!/^S\d{2,3}$/.test(code)) { $('m2').textContent = 'Kode subjek harus berformat S diikuti 2-3 angka, misalnya S01.'; return; }
+  if (!dev) { $('m2').textContent = 'Pilih perangkat yang sedang Anda pakai.'; return; }
+  $('m2').textContent = '';
+  state.subject = code; state.device = dev;
+  show('s3'); $('typing').focus();
+});
+
+/* ---- Langkah 3: perekam ketikan ---- */
+const typing = $('typing');
+let events = [], open = {};
+function setMsg(el, text, cls) { el.textContent = text; el.className = 'msg' + (cls ? ' ' + cls : ''); }
+function resetRep(text) { events = []; open = {}; typing.value = ''; setMsg($('m3'), text, 'err'); }
+function updateRepUI() {
+  $('bar').style.width = (state.reps.length / CONFIG.REPS * 100) + '%';
+  $('to4').disabled = state.reps.length < CONFIG.REPS;
+  if (state.reps.length >= CONFIG.REPS) { setMsg($('m3'), 'Selesai. Lanjut ke langkah berikutnya.', 'ok'); typing.disabled = true; }
+  else setMsg($('m3'), 'Terekam ' + state.reps.length + ' dari ' + CONFIG.REPS + '.', 'ok');
+}
+typing.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); finishRep(); return; }
+  if (e.key === 'Backspace' || e.key === 'Delete') { e.preventDefault(); resetRep('Backspace tidak dipakai. Ulangi dari awal.'); return; }
+  if (/^Arrow|^Home$|^End$|^PageUp$|^PageDown$/.test(e.key)) { e.preventDefault(); resetRep('Tombol panah tidak dipakai. Ulangi dari awal.'); return; }
+  if (e.key === 'CapsLock') { e.preventDefault(); resetRep('Jangan pakai Caps Lock. Gunakan tombol Shift untuk huruf besar.'); return; }
+  if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+  events.push({ k: e.key, c: e.code, d: performance.now(), u: null });
+  open[e.code] = events.length - 1;
+});
+typing.addEventListener('keyup', e => {
+  const i = open[e.code];
+  if (i !== undefined) { events[i].u = performance.now(); delete open[e.code]; }
+});
+['paste','drop','contextmenu','cut'].forEach(t => typing.addEventListener(t, e => e.preventDefault()));
+function finishRep() {
+  if (typing.value !== CONFIG.PHRASE) { resetRep('Ketikan tidak sama dengan teks. Ulangi dari awal.'); return; }
+  if (events.length < CONFIG.PHRASE.length || events.some(ev => ev.u === null || ev.k === 'Unidentified')) {
+    resetRep('Perangkat tidak mengirim data tombol dengan lengkap. Coba browser lain atau keyboard fisik.'); return;
+  }
+  const t0 = events[0].d;
+  const clean = events.map(ev => ({ k: ev.k, c: ev.c, d: +(ev.d - t0).toFixed(2), u: +(ev.u - t0).toFixed(2) }));
+  state.reps.push({ rep: state.reps.length + 1, events: clean });
+  events = []; open = {}; typing.value = '';
+  updateRepUI();
+}
+$('back2').addEventListener('click', () => show('s2'));
+$('to4').addEventListener('click', () => { show('s4'); updateSigUI(); });
+
+/* ---- Langkah 4: kanvas tanda tangan ---- */
+const pad = $('pad'), ctx = pad.getContext('2d');
+let drawing = false, points = 0;
+function resetPad() { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, pad.width, pad.height); points = 0; }
+ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#111';
+resetPad();
+function pos(e) {
+  const r = pad.getBoundingClientRect();
+  return { x: (e.clientX - r.left) * pad.width / r.width, y: (e.clientY - r.top) * pad.height / r.height };
+}
+pad.addEventListener('pointerdown', e => { drawing = true; pad.setPointerCapture(e.pointerId); const p = pos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+pad.addEventListener('pointermove', e => { if (!drawing) return; const p = pos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); points++; });
+['pointerup','pointercancel'].forEach(t => pad.addEventListener(t, () => { drawing = false; }));
+$('clear').addEventListener('click', () => { resetPad(); setMsg($('m4'), ''); });
+function updateSigUI() {
+  $('bar2').style.width = (state.sigs.length / CONFIG.SIG_COUNT * 100) + '%';
+  $('send').disabled = state.sigs.length < CONFIG.SIG_COUNT;
+  $('saveSig').disabled = state.sigs.length >= CONFIG.SIG_COUNT;
+  setMsg($('m4'), 'Tersimpan ' + state.sigs.length + ' dari ' + CONFIG.SIG_COUNT + '.', state.sigs.length ? 'ok' : '');
+}
+$('saveSig').addEventListener('click', () => {
+  if (points < 15) { setMsg($('m4'), 'Kotak masih kosong atau terlalu pendek. Tanda tangani dulu.', 'err'); return; }
+  state.sigs.push({ index: state.sigs.length + 1, png: pad.toDataURL('image/png') });
+  resetPad(); updateSigUI();
+});
+$('back3').addEventListener('click', () => show('s3'));
+
+/* ---- Pengiriman ---- */
+async function post(obj) {
+  if (CONFIG.ENDPOINT.startsWith('GANTI')) return false;
+  await fetch(CONFIG.ENDPOINT, { method: 'POST', mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(obj) });
+  return true;
+}
+$('send').addEventListener('click', async () => {
+  $('send').disabled = true; setMsg($('m4'), 'Mengirim data. Jangan tutup halaman.', '');
+  const base = { subject: state.subject, device: state.device, userAgent: navigator.userAgent };
+  try {
+    let sent = await post({ ...base, type: 'session', consentAt: state.consentAt, phrase: CONFIG.PHRASE });
+    await post({ ...base, type: 'keystroke', phrase: CONFIG.PHRASE, reps: state.reps });
+    for (const s of state.sigs) {
+      setMsg($('m4'), 'Mengirim tanda tangan ' + s.index + ' dari ' + state.sigs.length + '.', '');
+      await post({ ...base, type: 'signature', index: s.index, png: s.png });
+    }
+    $('doneMsg').textContent = sent
+      ? 'Data Anda sudah terkirim. Kode subjek Anda: ' + state.subject + '.'
+      : 'Mode uji: alamat penyimpanan belum diisi, jadi data tidak dikirim. Gunakan tombol cadangan di bawah.';
+    if (CONFIG.PAPER_FORM_URL) { $('paperLink').href = CONFIG.PAPER_FORM_URL; $('paperBox').hidden = false; }
+    show('s5');
+  } catch (err) {
+    $('send').disabled = false;
+    $('doneTitle').textContent = 'Pengiriman gagal';
+    $('doneMsg').textContent = 'Periksa koneksi lalu kembali dan tekan Kirim data lagi. Jika tetap gagal, unduh cadangan di bawah dan kirim ke kontak kelompok.';
+    $('paperBox').hidden = true; show('s5');
+  }
+});
+$('backup').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify({ subject: state.subject, device: state.device, phrase: CONFIG.PHRASE,
+    reps: state.reps, signatures: state.sigs }, null, 1)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = state.subject + '_cadangan.json'; a.click(); URL.revokeObjectURL(a.href);
+});
+</script>
+</body>
+</html>
