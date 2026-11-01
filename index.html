@@ -4,113 +4,187 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pengumpulan Data Penelitian: Ketikan dan Tanda Tangan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f5f8fa; --card: #ffffff; --ink: #14212e; --muted: #5a6b7a;
-    --line: #d5dee5; --accent: #0e7c8a; --accent-ink: #ffffff;
-    --warn: #b4540a; --ok: #1d7a46; --focus: #f2a541;
+    --bg:#eeedf7; --card:#fff; --ink:#1a1840; --muted:#5d5b82; --line:#d9d7ea;
+    --accent:#4f3df0; --accent-d:#2f1fb5; --accent-ink:#fff; --hl:#ffc61a;
+    --warn:#c2410c; --ok:#11875d; --focus:#ffb000;
+    --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
   }
   @media (prefers-color-scheme: dark) {
-    :root { --bg: #0b1f33; --card: #12304b; --ink: #eaf2f7; --muted: #9fb6c6;
-            --line: #274a68; --accent: #3bb6c6; --accent-ink: #06202c;
-            --warn: #f2a541; --ok: #6fd39a; }
+    :root { --bg:#12112b; --card:#1c1b3f; --ink:#ecebff; --muted:#a3a1d0; --line:#35336b;
+            --accent:#8c7dff; --accent-d:#5a49d6; --accent-ink:#0f0d30; --hl:#ffd24d;
+            --warn:#ffb066; --ok:#5fe0a8; }
   }
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
-  body { margin: 0; background: var(--bg); color: var(--ink);
-         font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  main { max-width: 680px; margin: 0 auto; padding: 24px 16px 64px; }
-  h1 { font: 700 26px/1.25 Georgia, "Times New Roman", serif; margin: 0 0 4px; }
-  h2 { font: 700 21px/1.3 Georgia, "Times New Roman", serif; margin: 0 0 12px; }
-  p { margin: 0 0 12px; }
-  .sub { color: var(--muted); margin-bottom: 20px; }
-  .step-label { color: var(--muted); font-size: 14px; margin-bottom: 8px; }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 20px; }
-  label { display: block; font-weight: 600; margin: 14px 0 6px; }
-  input[type=text], select { width: 100%; padding: 12px; font: inherit; color: var(--ink);
-    background: var(--bg); border: 1px solid var(--line); border-radius: 8px; }
-  input[type=text].typing { font-size: 22px; letter-spacing: .04em; font-family: ui-monospace, Menlo, Consolas, monospace; }
-  .check { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; margin-top: 16px; }
-  .check input { width: 22px; height: 22px; margin-top: 3px; flex: none; }
-  button { font: inherit; font-weight: 600; padding: 12px 20px; border-radius: 8px; cursor: pointer;
-           border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); }
-  button.secondary { background: transparent; color: var(--ink); border-color: var(--line); }
-  button:disabled { opacity: .45; cursor: not-allowed; }
-  .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
-  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
-  .phrase { font: 700 28px/1.2 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .06em;
-            padding: 14px; text-align: center; background: var(--bg); border: 1px dashed var(--line);
-            border-radius: 8px; margin: 8px 0 14px; user-select: none; -webkit-user-select: none; }
-  .progress { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; margin: 12px 0; }
-  .progress > div { height: 100%; width: 0; background: var(--accent); transition: width .2s; }
-  .msg { min-height: 1.6em; font-size: 15px; }
-  .msg.err { color: var(--warn); } .msg.ok { color: var(--ok); }
-  canvas { width: 100%; height: auto; aspect-ratio: 3 / 1; background: #fff; border: 1px solid var(--line);
-           border-radius: 8px; touch-action: none; display: block; }
-  ul { padding-left: 20px; margin: 0 0 12px; } li { margin-bottom: 4px; }
-  .small { font-size: 14px; color: var(--muted); }
-  [hidden] { display: none !important; }
-  @media (prefers-reduced-motion: reduce) { .progress > div { transition: none; } }
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.6 Figtree,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  main { max-width:720px; margin:0 auto; padding:28px 16px 72px; }
+  h1 { font:800 clamp(30px,7vw,44px)/1.05 var(--display); letter-spacing:-.025em; margin:0 0 8px; }
+  h2 { font:800 25px/1.2 var(--display); letter-spacing:-.015em; margin:0 0 12px; }
+  p { margin:0 0 12px; }
+  .sub { color:var(--muted); max-width:52ch; margin-bottom:24px; }
+  .small { font-size:14px; color:var(--muted); }
+  a.wa { color:var(--accent); font-weight:600; text-underline-offset:3px; }
+  a.wa:hover { text-decoration-thickness:2px; }
+
+  /* jalur langkah */
+  .track { display:flex; gap:8px; list-style:none; padding:0; margin:0 0 18px; }
+  .track li { flex:1; font-size:13px; color:var(--muted); }
+  .track li::before { content:""; display:block; height:6px; border-radius:3px; background:var(--line); margin-bottom:6px; transition:background .3s; }
+  .track li.done::before { background:var(--accent); }
+  .track li.now { color:var(--ink); font-weight:600; }
+  .track li.now::before { background:linear-gradient(90deg,var(--accent) 55%,var(--line) 55%); }
+
+  .card { background:var(--card); border:1px solid var(--line); border-radius:22px; padding:26px;
+          box-shadow:0 28px 48px -36px rgba(26,24,64,.45); }
+  .card.in { animation:rise .35s ease both; }
+  @keyframes rise { from { opacity:0; transform:translateY(10px); } }
+
+  /* persetujuan */
+  .facts { list-style:none; padding:0; margin:0 0 14px; display:grid; gap:10px; }
+  .facts li { padding:12px 14px 12px 16px; background:var(--bg); border-radius:12px; border-left:5px solid var(--accent); }
+  .facts li.no { border-left-color:var(--warn); } .facts li.ok { border-left-color:var(--ok); }
+  .switch { display:flex; gap:14px; align-items:center; margin-top:18px; padding:14px; border:2px solid var(--line);
+            border-radius:14px; cursor:pointer; font-weight:400; transition:border-color .2s; }
+  .switch:has(input:checked) { border-color:var(--accent); }
+  .switch input { appearance:none; -webkit-appearance:none; flex:none; width:52px; height:30px; margin:0; border-radius:15px;
+            background:var(--line); position:relative; cursor:pointer; transition:background .2s; }
+  .switch input::after { content:""; position:absolute; top:3px; left:3px; width:24px; height:24px; border-radius:50%;
+            background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.3); transition:transform .2s; }
+  .switch input:checked { background:var(--accent); }
+  .switch input:checked::after { transform:translateX(22px); }
+
+  label { display:block; font-weight:600; margin:16px 0 6px; }
+  input[type=text] { width:100%; padding:13px 14px; font:inherit; color:var(--ink); background:var(--bg);
+            border:2px solid var(--line); border-radius:12px; transition:border-color .2s; }
+  #subject { font:700 26px var(--mono); letter-spacing:.12em; text-transform:uppercase; }
+  #subject.valid { border-color:var(--ok); }
+  .tiles { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .tile { position:relative; margin:0; padding:16px 14px; border:2px solid var(--line); border-radius:14px; cursor:pointer;
+          font-weight:600; line-height:1.35; transition:transform .12s, border-color .2s, background .2s; }
+  .tile:hover { transform:translateY(-2px); }
+  .tile input { position:absolute; opacity:0; inset:0; }
+  .tile b { display:block; font-size:30px; line-height:1.1; margin-bottom:6px; }
+  .tile span { font-weight:400; font-size:14px; color:var(--muted); }
+  .tile:has(input:checked) { border-color:var(--accent); background:color-mix(in srgb,var(--accent) 12%,var(--card)); }
+  .tile:has(input:focus-visible) { outline:3px solid var(--focus); outline-offset:2px; }
+
+  /* tombol seperti keycap */
+  button { font:inherit; font-weight:600; padding:12px 22px; border-radius:12px; cursor:pointer; border:0;
+           background:var(--accent); color:var(--accent-ink); box-shadow:0 4px 0 var(--accent-d);
+           transition:transform .08s, box-shadow .08s; }
+  button:hover:not(:disabled) { transform:translateY(-1px); box-shadow:0 5px 0 var(--accent-d); }
+  button:active:not(:disabled) { transform:translateY(4px); box-shadow:0 0 0 var(--accent-d); }
+  button.secondary { background:var(--card); color:var(--ink); box-shadow:inset 0 0 0 2px var(--line), 0 4px 0 var(--line); }
+  button:disabled { opacity:.4; cursor:not-allowed; box-shadow:none; }
+  .row { display:flex; gap:12px; flex-wrap:wrap; margin-top:20px; }
+  :focus-visible { outline:3px solid var(--focus); outline-offset:3px; }
+
+  /* papan ketik */
+  .caps { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:18px 0; cursor:text; user-select:none; -webkit-user-select:none; }
+  .cap { min-width:44px; height:60px; padding:0 8px; display:grid; place-items:center; font:700 clamp(22px,5.5vw,30px) var(--mono);
+         background:var(--card); border:2px solid var(--line); border-radius:10px; box-shadow:0 6px 0 var(--line);
+         transition:transform .07s, box-shadow .07s, background .15s; }
+  .cap.cur { border-color:var(--accent); background:color-mix(in srgb,var(--accent) 12%,var(--card)); }
+  .cap.ok { background:var(--accent); color:var(--accent-ink); border-color:var(--accent-d); box-shadow:0 6px 0 var(--accent-d); }
+  .cap.bad { background:var(--warn); color:#fff; border-color:var(--warn); box-shadow:0 6px 0 rgba(0,0,0,.3); }
+  .cap.down { transform:translateY(5px); box-shadow:0 1px 0 var(--line); }
+  .cap.ok.down { box-shadow:0 1px 0 var(--accent-d); }
+  .caps.shake { animation:shake .3s; }
+  .caps.wave .cap { animation:hop .45s ease calc(var(--i) * 35ms); }
+  @keyframes shake { 25% { transform:translateX(-7px); } 75% { transform:translateX(7px); } }
+  @keyframes hop { 40% { transform:translateY(-10px); } }
+  input.typing { font:500 22px var(--mono); letter-spacing:.06em; }
+  canvas.strip { width:100%; height:auto; aspect-ratio:900/110; background:var(--bg); border-radius:12px; display:block; margin-top:14px; }
+  .dots { display:flex; gap:6px; margin:14px 0 6px; }
+  .dots i { flex:1; height:10px; border-radius:5px; background:var(--line); transition:background .25s, transform .25s; }
+  .dots i.on { background:var(--accent); transform:scaleY(1.4); }
+  .msg { min-height:1.6em; font-size:15px; margin-bottom:8px; }
+  .msg.err { color:var(--warn); } .msg.ok { color:var(--ok); }
+
+  /* tanda tangan */
+  .padwrap { position:relative; }
+  canvas#pad { width:100%; height:auto; aspect-ratio:3/1; background:#fff; border:2px solid var(--line); border-radius:14px; touch-action:none; display:block; cursor:crosshair; }
+  .hint { position:absolute; inset:0; display:grid; place-items:center; color:#9d9bbd; pointer-events:none; transition:opacity .25s; }
+  .hint::before { content:"\00d7"; position:absolute; left:6%; bottom:26%; font-size:24px; line-height:0; }
+  .hint::after { content:""; position:absolute; left:6%; right:6%; bottom:26%; border-top:2px dashed #d9d7ea; }
+  .padwrap.inked .hint { opacity:0; }
+  .slots { display:grid; grid-template-columns:repeat(10,1fr); gap:6px; margin:14px 0 6px; }
+  .slot { aspect-ratio:3/2; background:#fff; border:2px dashed var(--line); border-radius:8px; overflow:hidden; }
+  .slot.next { border:2px solid var(--accent); }
+  .slot img { width:100%; height:100%; object-fit:contain; display:block; animation:rise .3s both; }
+  @media (max-width:520px) { .slots { grid-template-columns:repeat(5,1fr); } .cap { min-width:36px; height:54px; } }
+
+  .badge { width:54px; height:54px; border-radius:50%; background:var(--ok); color:#fff; display:grid; place-items:center; font-size:30px; margin-bottom:14px; }
+  [hidden] { display:none !important; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } }
 </style>
 </head>
 <body>
 <main>
   <h1>Pengumpulan data penelitian</h1>
   <p class="sub">Ketikan dan tanda tangan untuk tugas mata kuliah Pengenalan Pola. Waktu sekitar 10-15 menit.</p>
+  <ol class="track" id="track" aria-label="Langkah">
+    <li>Persetujuan</li><li>Kode subjek</li><li>Mengetik</li><li>Tanda tangan</li>
+  </ol>
 
   <!-- Langkah 1: Persetujuan -->
   <section id="s1" class="card">
-    <div class="step-label">Langkah 1 dari 4</div>
     <h2>Persetujuan</h2>
     <p>Kami meneliti apakah ritme mengetik dan tanda tangan dapat dipakai untuk memverifikasi identitas. Data hanya dipakai untuk tugas kuliah ini.</p>
-    <ul>
-      <li>Yang direkam: waktu menekan dan melepas tiap tombol, serta gambar tanda tangan Anda.</li>
-      <li>Yang tidak direkam: nama asli, isi ketikan pribadi, dan lokasi. Anda hanya dikenali lewat kode subjek.</li>
-       <li>Tanda tangan Anda boleh ditiru oleh anggota kelompok peneliti, hanya untuk menguji ketahanan sistem terhadap pemalsuan. Hasil peniruan dipakai untuk pengujian saja dan tidak pernah untuk melatih model.</li>
-      <li>Anda boleh mundur kapan saja dan meminta data Anda dihapus lewat kontak kelompok.</li>
+    <ul class="facts">
+      <li><b>Yang direkam:</b> waktu menekan dan melepas tiap tombol, serta gambar tanda tangan Anda.</li>
+      <li class="no"><b>Yang tidak direkam:</b> nama asli, isi ketikan pribadi, dan lokasi. Anda hanya dikenali lewat kode subjek.</li>
+      <li><b>Peniruan tanda tangan:</b> tanda tangan Anda boleh ditiru oleh anggota kelompok peneliti, hanya untuk menguji ketahanan sistem terhadap pemalsuan. Hasil peniruan dipakai untuk pengujian saja dan tidak pernah untuk melatih model.</li>
+      <li class="ok"><b>Hak Anda:</b> Anda boleh mundur kapan saja dan meminta data Anda dihapus lewat kontak kelompok.</li>
     </ul>
-    <p class="small">Kontak kelompok: <span id="contact">085363533283</span></p>
-    <label class="check"><input type="checkbox" id="consent"> <span>Saya telah membaca penjelasan di atas dan bersedia ikut serta.</span></label>
+    <p class="small">Ada pertanyaan atau ingin mundur? <a class="wa" target="_blank" rel="noopener">Chat kelompok lewat WhatsApp</a></p>
+    <label class="switch"><input type="checkbox" id="consent"> <span>Saya telah membaca penjelasan di atas dan bersedia ikut serta.</span></label>
     <div class="row"><button id="to2" disabled>Lanjut</button></div>
   </section>
 
   <!-- Langkah 2: Identitas anonim -->
   <section id="s2" class="card" hidden>
-    <div class="step-label">Langkah 2 dari 4</div>
     <h2>Kode subjek dan perangkat</h2>
     <label for="subject">Kode subjek dari peneliti</label>
-    <input type="text" id="subject" placeholder="Contoh: S01" autocomplete="off" inputmode="text" maxlength="5">
-    <label for="device">Perangkat yang Anda pakai sekarang</label>
-    <select id="device">
-      <option value="">Pilih perangkat</option>
-      <option value="laptop">Laptop atau PC dengan keyboard fisik</option>
-      <option value="hp">HP atau tablet</option>
-    </select>
-    <p class="msg err" id="m2"></p>
+    <input type="text" id="subject" placeholder="S01" autocomplete="off" inputmode="text" maxlength="5">
+    <label id="devLabel">Perangkat yang Anda pakai sekarang</label>
+    <div class="tiles" role="radiogroup" aria-labelledby="devLabel">
+      <label class="tile"><input type="radio" name="device" value="laptop"><b aria-hidden="true">⌨️</b>Laptop atau PC<br><span>Keyboard fisik</span></label>
+      <label class="tile"><input type="radio" name="device" value="hp"><b aria-hidden="true">📱</b>HP atau tablet<br><span>Keyboard layar</span></label>
+    </div>
+    <p class="msg err" id="m2" role="alert" style="margin-top:12px"></p>
     <div class="row"><button class="secondary" id="back1">Kembali</button><button id="to3">Lanjut</button></div>
   </section>
 
   <!-- Langkah 3: Ketikan -->
   <section id="s3" class="card" hidden>
-    <div class="step-label">Langkah 3 dari 4</div>
     <h2>Mengetik</h2>
     <p>Ketik teks di bawah persis seperti tertulis, lalu tekan <strong>Enter</strong>. Ulangi sampai penghitung selesai. Ketik dengan kecepatan wajar Anda. Untuk huruf besar, tahan tombol <strong>Shift</strong> (jangan pakai Caps Lock).</p>
-    <div class="phrase" id="phrase" aria-label="Teks yang harus diketik"></div>
+    <div class="caps" id="caps" role="img" aria-label="Teks yang harus diketik"></div>
     <input type="text" class="typing" id="typing" autocomplete="off" autocorrect="off"
            autocapitalize="off" spellcheck="false" aria-label="Kolom ketik" placeholder="Ketik di sini">
-    <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+    <canvas class="strip" id="strip" width="900" height="110" aria-hidden="true"></canvas>
+    <div class="dots" id="dots" aria-hidden="true"></div>
     <p class="msg" id="m3" role="status"></p>
-    <p class="small">Jangan memakai Backspace atau tempel (paste). Jika salah ketik, kolom akan dikosongkan dan Anda mengulang dari awal.</p>
+    <p class="small">Jangan memakai Backspace atau tempel (paste). Jika salah ketik, kolom akan dikosongkan dan Anda mengulang dari awal. Garis berwarna di atas adalah ritme tekan tiap tombol pada ketikan Anda.</p>
     <div class="row"><button class="secondary" id="back2">Kembali</button><button id="to4" disabled>Lanjut</button></div>
   </section>
 
   <!-- Langkah 4: Tanda tangan -->
   <section id="s4" class="card" hidden>
-    <div class="step-label">Langkah 4 dari 4</div>
     <h2>Tanda tangan di layar</h2>
     <p>Tanda tangani seperti biasa di kotak putih memakai jari, stylus, atau mouse. Simpan setelah tiap tanda tangan. Targetnya <strong id="sigTarget"></strong> tanda tangan.</p>
-    <canvas id="pad" width="1200" height="400" aria-label="Kotak tanda tangan"></canvas>
-    <div class="progress" aria-hidden="true"><div id="bar2"></div></div>
+    <div class="padwrap" id="padwrap">
+      <canvas id="pad" width="1200" height="400" aria-label="Kotak tanda tangan"></canvas>
+      <div class="hint">Tanda tangani di sini</div>
+    </div>
+    <div class="slots" id="slots" aria-hidden="true"></div>
     <p class="msg" id="m4" role="status"></p>
     <div class="row">
       <button class="secondary" id="clear">Hapus</button>
@@ -121,14 +195,19 @@
 
   <!-- Selesai -->
   <section id="s5" class="card" hidden>
+    <div class="badge" id="badge" aria-hidden="true">✓</div>
     <h2 id="doneTitle">Selesai, terima kasih</h2>
     <p id="doneMsg"></p>
+    <div id="printBox" hidden>
+      <p class="small">Ritme mengetik Anda: tiap garis adalah satu ketikan, tingginya lama tombol ditahan.</p>
+      <canvas class="strip" id="print" width="900" height="110" aria-hidden="true"></canvas>
+    </div>
     <div id="paperBox" hidden>
-      <p><strong>Satu langkah lagi (tanda tangan di kertas):</strong> tanda tangani 10 kali di kertas putih polos, foto dengan cahaya merata, lalu unggah lewat tautan berikut. Cantumkan kode subjek Anda.</p>
+      <p style="margin-top:16px"><strong>Satu langkah lagi (tanda tangan di kertas):</strong> tanda tangani 10 kali di kertas putih polos, foto dengan cahaya merata, lalu unggah lewat tautan berikut. Cantumkan kode subjek Anda.</p>
       <p><a id="paperLink" href="#" target="_blank" rel="noopener">Buka formulir unggah foto</a></p>
     </div>
     <div class="row"><button class="secondary" id="backup">Unduh cadangan data (JSON)</button></div>
-    <p class="small">Cadangan hanya dipakai jika pengiriman gagal. Kirim file itu ke kontak kelompok.</p>
+    <p class="small" style="margin-top:12px">Cadangan hanya dipakai jika pengiriman gagal. Kirim file itu lewat <a class="wa" target="_blank" rel="noopener">WhatsApp kelompok</a>.</p>
   </section>
 </main>
 
@@ -139,17 +218,28 @@ const CONFIG = {
   PHRASE: '.tie5Roanl',                        // string yang sama dengan dataset CMU
   REPS: 25,                                    // jumlah pengulangan ketikan
   SIG_COUNT: 15,                               // jumlah tanda tangan di layar
-  PAPER_FORM_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSe2q5bacIVSjMfXFh3ElGjjXUgxab8HYhYnGSOyGjEherBung/viewform?usp=dialog',                          // tautan Google Form unggah foto
-  CONTACT: '085363533283'
+  PAPER_FORM_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSe2q5bacIVSjMfXFh3ElGjjXUgxab8HYhYnGSOyGjEherBung/viewform?usp=publish-editor',                          // tautan Google Form unggah foto (opsional)
+  WA_NUMBER: '6285363533283',                  // nomor WA tanpa + dan tanpa 0 di depan, contoh: 6281234567890
+  WA_TEXT: 'Halo, saya peserta penelitian Pengenalan Pola.'   // pesan awal yang sudah terisi saat WA terbuka
 };
 
 const $ = id => document.getElementById(id);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const state = { subject: '', device: '', reps: [], sigs: [], consentAt: null };
 const steps = ['s1','s2','s3','s4','s5'];
-function show(id) { steps.forEach(s => $(s).hidden = (s !== id)); window.scrollTo(0, 0); }
+const trackLis = [...$('track').children];
+function show(id) {
+  steps.forEach(s => $(s).hidden = (s !== id));
+  const el = $(id); el.classList.remove('in'); void el.offsetWidth; el.classList.add('in');
+  const idx = steps.indexOf(id);
+  trackLis.forEach((li, i) => { li.className = i < idx ? 'done' : i === idx ? 'now' : ''; });
+  window.scrollTo(0, 0);
+}
+show('s1');
 
-$('contact').textContent = CONFIG.CONTACT;
-$('phrase').textContent = CONFIG.PHRASE;
+document.querySelectorAll('a.wa').forEach(a => {
+  a.href = 'https://wa.me/qr/6AM7BKIJUW6SD1' + CONFIG.WA_NUMBER + '?text=' + encodeURIComponent(CONFIG.WA_TEXT);
+});
 $('sigTarget').textContent = CONFIG.SIG_COUNT;
 
 /* ---- Langkah 1 ---- */
@@ -157,28 +247,69 @@ $('consent').addEventListener('change', e => { $('to2').disabled = !e.target.che
 $('to2').addEventListener('click', () => { state.consentAt = new Date().toISOString(); show('s2'); });
 
 /* ---- Langkah 2 ---- */
+$('subject').addEventListener('input', e => {
+  e.target.value = e.target.value.toUpperCase();
+  e.target.classList.toggle('valid', /^S\d{2,3}$/.test(e.target.value.trim()));
+});
 $('back1').addEventListener('click', () => show('s1'));
 $('to3').addEventListener('click', () => {
   const code = $('subject').value.trim().toUpperCase();
-  const dev = $('device').value;
+  const dev = (document.querySelector('input[name=device]:checked') || {}).value;
   if (!/^S\d{2,3}$/.test(code)) { $('m2').textContent = 'Kode subjek harus berformat S diikuti 2-3 angka, misalnya S01.'; return; }
   if (!dev) { $('m2').textContent = 'Pilih perangkat yang sedang Anda pakai.'; return; }
   $('m2').textContent = '';
   state.subject = code; state.device = dev;
-  show('s3'); $('typing').focus();
+  show('s3'); typing.focus();
 });
 
 /* ---- Langkah 3: perekam ketikan ---- */
-const typing = $('typing');
+const typing = $('typing'), capsEl = $('caps');
+const caps = [...CONFIG.PHRASE].map((ch, i) => {
+  const d = document.createElement('div'); d.className = 'cap'; d.textContent = ch; d.style.setProperty('--i', i);
+  capsEl.appendChild(d); return d;
+});
+capsEl.setAttribute('aria-label', 'Teks yang harus diketik: ' + CONFIG.PHRASE);
+capsEl.addEventListener('click', () => typing.focus());
+const dots = Array.from({ length: CONFIG.REPS }, () => $('dots').appendChild(document.createElement('i')));
+const strip = $('strip'), sx = strip.getContext('2d');
+
+function drawLanes(ctx, W, H, list, now) {
+  ctx.clearRect(0, 0, W, H);
+  if (!list.length) return;
+  const t0 = list[0].d, end = Math.max(...list.map(e => e.u == null ? now : e.u));
+  const sc = (W - 20) / Math.max(end - t0, 1800);
+  list.forEach((e, i) => {
+    const u = e.u == null ? now : e.u;
+    ctx.fillStyle = e.k === 'Shift' ? css('--hl') : css('--accent');
+    ctx.fillRect(10 + (e.d - t0) * sc, 8 + (i % 3) * 34, Math.max((u - e.d) * sc, 5), 26);
+  });
+}
+const drawStrip = list => drawLanes(sx, strip.width, strip.height, list, performance.now());
+
+function syncCaps() {
+  const v = typing.value;
+  caps.forEach((c, i) => {
+    c.classList.toggle('ok', i < v.length && v[i] === CONFIG.PHRASE[i]);
+    c.classList.toggle('bad', i < v.length && v[i] !== CONFIG.PHRASE[i]);
+    c.classList.toggle('cur', i === v.length);
+  });
+  if ([...v].some((ch, i) => ch !== CONFIG.PHRASE[i])) setMsg($('m3'), 'Ada huruf yang tidak sesuai. Tekan Enter untuk mengulang dari awal.', 'err');
+}
 let events = [], open = {};
 function setMsg(el, text, cls) { el.textContent = text; el.className = 'msg' + (cls ? ' ' + cls : ''); }
-function resetRep(text) { events = []; open = {}; typing.value = ''; setMsg($('m3'), text, 'err'); }
+function resetRep(text) {
+  events = []; open = {}; typing.value = ''; setMsg($('m3'), text, 'err');
+  capsEl.classList.remove('shake'); void capsEl.offsetWidth; capsEl.classList.add('shake');
+  syncCaps(); drawStrip([]);
+}
 function updateRepUI() {
-  $('bar').style.width = (state.reps.length / CONFIG.REPS * 100) + '%';
+  dots.forEach((d, i) => d.classList.toggle('on', i < state.reps.length));
   $('to4').disabled = state.reps.length < CONFIG.REPS;
   if (state.reps.length >= CONFIG.REPS) { setMsg($('m3'), 'Selesai. Lanjut ke langkah berikutnya.', 'ok'); typing.disabled = true; }
   else setMsg($('m3'), 'Terekam ' + state.reps.length + ' dari ' + CONFIG.REPS + '.', 'ok');
 }
+syncCaps();
+typing.addEventListener('input', syncCaps);
 typing.addEventListener('keydown', e => {
   if (e.key === 'Enter') { e.preventDefault(); finishRep(); return; }
   if (e.key === 'Backspace' || e.key === 'Delete') { e.preventDefault(); resetRep('Backspace tidak dipakai. Ulangi dari awal.'); return; }
@@ -187,10 +318,14 @@ typing.addEventListener('keydown', e => {
   if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
   events.push({ k: e.key, c: e.code, d: performance.now(), u: null });
   open[e.code] = events.length - 1;
+  if (e.key.length === 1 && caps[typing.value.length]) caps[typing.value.length].classList.add('down');
+  drawStrip(events);
 });
 typing.addEventListener('keyup', e => {
   const i = open[e.code];
   if (i !== undefined) { events[i].u = performance.now(); delete open[e.code]; }
+  caps.forEach(c => c.classList.remove('down'));
+  drawStrip(events);
 });
 ['paste','drop','contextmenu','cut'].forEach(t => typing.addEventListener(t, e => e.preventDefault()));
 function finishRep() {
@@ -202,6 +337,8 @@ function finishRep() {
   const clean = events.map(ev => ({ k: ev.k, c: ev.c, d: +(ev.d - t0).toFixed(2), u: +(ev.u - t0).toFixed(2) }));
   state.reps.push({ rep: state.reps.length + 1, events: clean });
   events = []; open = {}; typing.value = '';
+  syncCaps(); drawStrip(clean);
+  capsEl.classList.remove('wave'); void capsEl.offsetWidth; capsEl.classList.add('wave');
   updateRepUI();
 }
 $('back2').addEventListener('click', () => show('s2'));
@@ -209,22 +346,36 @@ $('to4').addEventListener('click', () => { show('s4'); updateSigUI(); });
 
 /* ---- Langkah 4: kanvas tanda tangan ---- */
 const pad = $('pad'), ctx = pad.getContext('2d');
-let drawing = false, points = 0;
-function resetPad() { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, pad.width, pad.height); points = 0; }
-ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#111';
+const slotEls = Array.from({ length: CONFIG.SIG_COUNT }, () => $('slots').appendChild(Object.assign(document.createElement('div'), { className: 'slot' })));
+let drawing = false, points = 0, last = null, lastT = 0, lw = 4;
+function resetPad() { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, pad.width, pad.height); points = 0; $('padwrap').classList.remove('inked'); }
+ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#111';
 resetPad();
 function pos(e) {
   const r = pad.getBoundingClientRect();
   return { x: (e.clientX - r.left) * pad.width / r.width, y: (e.clientY - r.top) * pad.height / r.height };
 }
-pad.addEventListener('pointerdown', e => { drawing = true; pad.setPointerCapture(e.pointerId); const p = pos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
-pad.addEventListener('pointermove', e => { if (!drawing) return; const p = pos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); points++; });
+pad.addEventListener('pointerdown', e => {
+  drawing = true; pad.setPointerCapture(e.pointerId); last = pos(e); lastT = e.timeStamp; lw = 4;
+  $('padwrap').classList.add('inked');
+});
+pad.addEventListener('pointermove', e => {
+  if (!drawing) return;
+  const p = pos(e), v = Math.hypot(p.x - last.x, p.y - last.y) / Math.max(e.timeStamp - lastT, 1);
+  const target = e.pointerType === 'pen' && e.pressure > 0 ? 2 + e.pressure * 6 : Math.min(7, Math.max(2.5, 7.5 - v * 2.2));
+  lw = lw * 0.7 + target * 0.3;           /* garis menipis saat goresan cepat, seperti tinta */
+  ctx.lineWidth = lw; ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+  last = p; lastT = e.timeStamp; points++;
+});
 ['pointerup','pointercancel'].forEach(t => pad.addEventListener(t, () => { drawing = false; }));
 $('clear').addEventListener('click', () => { resetPad(); setMsg($('m4'), ''); });
 function updateSigUI() {
-  $('bar2').style.width = (state.sigs.length / CONFIG.SIG_COUNT * 100) + '%';
   $('send').disabled = state.sigs.length < CONFIG.SIG_COUNT;
   $('saveSig').disabled = state.sigs.length >= CONFIG.SIG_COUNT;
+  slotEls.forEach((s, i) => {
+    s.classList.toggle('next', i === state.sigs.length);
+    if (state.sigs[i] && !s.firstChild) { const im = new Image(); im.alt = 'Tanda tangan ' + (i + 1); im.src = state.sigs[i].png; s.appendChild(im); }
+  });
   setMsg($('m4'), 'Tersimpan ' + state.sigs.length + ' dari ' + CONFIG.SIG_COUNT + '.', state.sigs.length ? 'ok' : '');
 }
 $('saveSig').addEventListener('click', () => {
@@ -241,6 +392,16 @@ async function post(obj) {
     headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(obj) });
   return true;
 }
+function drawPrint() {   /* gambar ulang ritme: satu garis per ketikan, tinggi = lama tombol ditahan */
+  const c = $('print'), g = c.getContext('2d'), W = c.width, H = c.height;
+  g.clearRect(0, 0, W, H); g.lineWidth = 2; g.strokeStyle = css('--accent'); g.globalAlpha = .35;
+  state.reps.forEach(r => {
+    const ev = r.events.filter(x => x.k !== 'Shift'); g.beginPath();
+    ev.forEach((x, i) => { const px = 12 + i * (W - 24) / Math.max(ev.length - 1, 1), py = H - 10 - Math.min(x.u - x.d, 250) / 250 * (H - 20);
+      i ? g.lineTo(px, py) : g.moveTo(px, py); });
+    g.stroke();
+  });
+}
 $('send').addEventListener('click', async () => {
   $('send').disabled = true; setMsg($('m4'), 'Mengirim data. Jangan tutup halaman.', '');
   const base = { subject: state.subject, device: state.device, userAgent: navigator.userAgent };
@@ -251,16 +412,18 @@ $('send').addEventListener('click', async () => {
       setMsg($('m4'), 'Mengirim tanda tangan ' + s.index + ' dari ' + state.sigs.length + '.', '');
       await post({ ...base, type: 'signature', index: s.index, png: s.png });
     }
+    $('doneTitle').textContent = 'Selesai, terima kasih'; $('badge').hidden = false;
     $('doneMsg').textContent = sent
       ? 'Data Anda sudah terkirim. Kode subjek Anda: ' + state.subject + '.'
       : 'Mode uji: alamat penyimpanan belum diisi, jadi data tidak dikirim. Gunakan tombol cadangan di bawah.';
     if (CONFIG.PAPER_FORM_URL) { $('paperLink').href = CONFIG.PAPER_FORM_URL; $('paperBox').hidden = false; }
-    show('s5');
+    show('s5'); $('printBox').hidden = false; drawPrint();
   } catch (err) {
     $('send').disabled = false;
+    $('badge').hidden = true;
     $('doneTitle').textContent = 'Pengiriman gagal';
     $('doneMsg').textContent = 'Periksa koneksi lalu kembali dan tekan Kirim data lagi. Jika tetap gagal, unduh cadangan di bawah dan kirim ke kontak kelompok.';
-    $('paperBox').hidden = true; show('s5');
+    $('paperBox').hidden = true; $('printBox').hidden = true; show('s5');
   }
 });
 $('backup').addEventListener('click', () => {
