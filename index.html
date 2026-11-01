@@ -238,7 +238,7 @@ function show(id) {
 show('s1');
 
 document.querySelectorAll('a.wa').forEach(a => {
-  a.href = 'https://wa.me/qr/6AM7BKIJUW6SD1' + CONFIG.WA_NUMBER + '?text=' + encodeURIComponent(CONFIG.WA_TEXT);
+  a.href = 'https://wa.me/' + CONFIG.WA_NUMBER + '?text=' + encodeURIComponent(CONFIG.WA_TEXT);
 });
 $('sigTarget').textContent = CONFIG.SIG_COUNT;
 
